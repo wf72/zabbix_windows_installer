@@ -13,7 +13,12 @@ if %errorlevel%==0 (
 mkdir %localpath%
 xcopy /ZYE %netpath% %localpath%\
 
+%localpath%\zabbix_agentd.exe --stop
+%localpath%\zabbix_agentd.exe --config %localpath%\conf\zabbix_agentd.conf --uninstall
+
 %localpath%\zabbix_agentd.exe --config %localpath%\conf\zabbix_agentd.conf --install
 %localpath%\zabbix_agentd.exe --start
+
+netsh advfirewall firewall add rule name="zabbix agent" protocol=TCP localport=10050 action=allow dir=IN
 
 endlocal
